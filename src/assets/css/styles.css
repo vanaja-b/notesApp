@@ -47,6 +47,7 @@ p{margin-bottom: 0;}
 .chats-item {
   position: relative;
 }
+
 .chats-item:hover {
   cursor: pointer;
   background: #f2f4f4;

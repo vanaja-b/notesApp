@@ -12,12 +12,14 @@ export class NotepadComponent implements OnInit {
   public noteContent: any = {};
   public moment: any = moment;
   public deltebtnVisible: boolean = false;
-  public todayDate: Date = new Date();
+  public todayDate: Date;
   searchedKeyword: string;
+  public conentVisible: boolean = false;
 
   constructor(private commonSerive: CommonApiCallService) { }
   ngOnInit() {
     this.getNoteDetails();
+    this.todayDate = new Date();
   }
   /*********************************************************************************
         @PURPOSE      : Get the Note Details
@@ -25,7 +27,6 @@ export class NotepadComponent implements OnInit {
   getNoteDetails() {
     if (this.commonSerive.getToken('notesData')) {
       this.noteDetails = JSON.parse(this.commonSerive.getToken('notesData'));
-      this.noteContent = this.noteDetails[0];
     }
   }
   /********************************************************************************** */
@@ -33,8 +34,19 @@ export class NotepadComponent implements OnInit {
         @PURPOSE      : Get the particular note content
   /*********************************************************************************/
   getConent(note) {
-    this.noteContent = note;
-    this.deltebtnVisible = true
+    this.conentVisible = true
+    if (this.conentVisible) {
+      this.noteContent = note;
+      this.noteDetails.forEach((element, index) => {
+        if (element.id == note.id) {
+          element.isSelected = true;
+        }
+        else {
+          element.isSelected = false;
+        }
+      });
+      this.deltebtnVisible = true
+    }
   }
   /**************************************************************************** */
   /*********************************************************************************
@@ -56,6 +68,9 @@ export class NotepadComponent implements OnInit {
   addNotes() {
     this.noteDetails.push({ name: 'New Note', date: new Date(), id: Date.now() })
     this.commonSerive.setToken('notesData', JSON.stringify(this.noteDetails))
+    this.noteContent = this.noteDetails[0];
+    this.conentVisible = true;
+
   }
   /************************************************************************* */
 
@@ -63,6 +78,7 @@ export class NotepadComponent implements OnInit {
         @PURPOSE      : Delete Particular note
   /*********************************************************************************/
   deleteNote(noteContent) {
+    this.deltebtnVisible = false;
     this.noteDetails.forEach((element, i) => {
       if (element.id == noteContent.id) {
         this.noteDetails.splice(i, 1)
@@ -71,5 +87,16 @@ export class NotepadComponent implements OnInit {
       }
     })
   }
+  /*********************************************************************************
+       @PURPOSE      : Search for Notes
+  /*********************************************************************************/
+  searchContent() {
+    this.conentVisible = false;
+    this.noteDetails.forEach((element, index) => {
+      element.isSelected = false;
+
+    });
+  }
 }
+
 /********************************************************************************** */

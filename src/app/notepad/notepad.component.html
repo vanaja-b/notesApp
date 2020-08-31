@@ -1,11 +1,12 @@
 <div class="fixed-header">
     <div class="container" style="text-align: center">
         <nav>
-            <a class="fa fa-edit" id="addBtn" (click)="addNotes()"></a>
-            <a class="fa fa-trash" id="deleteBtn" *ngIf="deltebtnVisible" (click)="deleteNote(noteContent)"></a>
+            <a class="fa fa-edit" id="addBtn" data-placement="top" title="Add Notes" (click)="addNotes()"></a>
+            <a class="fa fa-trash" id="deleteBtn" *ngIf="deltebtnVisible &&  conentVisible"
+                (click)="deleteNote(noteContent)" data-placement="top" title="Delete Notes"></a>
             <span>
                 <input class="search" type="text" placeholder="Search Note Here.." [(ngModel)]="searchedKeyword"
-                    tabindex="-1" data-search="template-search">
+                    tabindex="-1" data-search="template-search" (keyup)="searchContent()">
             </span>
         </nav>
     </div>
@@ -14,7 +15,7 @@
     <aside class="main-side">
         <section class="chats">
             <ul class="chats-list" *ngFor="let note of noteDetails  | filter: searchedKeyword">
-                <li class=" chats-item" (click)="getConent(note)">
+                <li class="chats-item" [ngClass]="note.isSelected?'active':''" (click)="getConent(note)">
                     <div class="chats-item-button js-chat-button" role="button" tabindex="0">
                         <header class="chats-item-header">
                             <h3 class="chats-item-title">{{note.name}}</h3>
@@ -27,10 +28,14 @@
             </ul>
         </section>
     </aside>
-
+    <div *ngIf="noteDetails.length && !(noteDetails | filter : searchedKeyword).length">No Notes
+        found!</div>
+    <span *ngIf="!noteDetails?.length" style="margin-top: 40px;">No Notes Created Yet...</span>
     <div class="form-group">
-        <h1 class="info-text " *ngIf="noteContent.name">{{moment(todayDate).format('MMMM, DD yyyy hh:mm A' )}}</h1>
-        <input style="border: none;outline:none" type="text" name="noteContent" [(ngModel)]="noteContent.name"
-            (ngModelChange)="UpdateNotesConent(noteContent)">
+        <h1 class="info-text" *ngIf="noteContent.name&& conentVisible">
+            {{moment(todayDate).format('MMMM, DD yyyy' )}} at {{moment(todayDate).format('hh:mm A' )}}</h1>
+        <textarea *ngIf="conentVisible" style="border: none;outline:none" rows="100" cols="100" type="text"
+            name="noteContent" [(ngModel)]="noteContent.name"
+            (ngModelChange)="UpdateNotesConent(noteContent)"></textarea>
     </div>
 </section>
