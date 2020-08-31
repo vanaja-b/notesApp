@@ -1,0 +1,36 @@
+<div class="fixed-header">
+    <div class="container" style="text-align: center">
+        <nav>
+            <a class="fa fa-edit" id="addBtn" (click)="addNotes()"></a>
+            <a class="fa fa-trash" id="deleteBtn" *ngIf="deltebtnVisible" (click)="deleteNote(noteContent)"></a>
+            <span>
+                <input class="search" type="text" placeholder="Search Note Here.." [(ngModel)]="searchedKeyword"
+                    tabindex="-1" data-search="template-search">
+            </span>
+        </nav>
+    </div>
+</div>
+<section class="main-grid">
+    <aside class="main-side">
+        <section class="chats">
+            <ul class="chats-list" *ngFor="let note of noteDetails  | filter: searchedKeyword">
+                <li class=" chats-item" (click)="getConent(note)">
+                    <div class="chats-item-button js-chat-button" role="button" tabindex="0">
+                        <header class="chats-item-header">
+                            <h3 class="chats-item-title">{{note.name}}</h3>
+                        </header>
+                        <div class="chats-item-content">
+                            <p class="chats-item-last">{{moment(note.date).format('hh:mm:A')}}</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </aside>
+
+    <div class="form-group">
+        <h1 class="info-text " *ngIf="noteContent.name">{{moment(todayDate).format('MMMM, DD yyyy hh:mm A' )}}</h1>
+        <input style="border: none;outline:none" type="text" name="noteContent" [(ngModel)]="noteContent.name"
+            (ngModelChange)="UpdateNotesConent(noteContent)">
+    </div>
+</section>
