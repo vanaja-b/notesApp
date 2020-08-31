@@ -375,7 +375,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"fixed-header\">\n    <div class=\"container\" style=\"text-align: center\">\n        <nav>\n            <a class=\"fa fa-edit\" id=\"addBtn\" (click)=\"addNotes()\"></a>\n            <a class=\"fa fa-trash\" id=\"deleteBtn\" *ngIf=\"deltebtnVisible &&  conentVisible\"\n                (click)=\"deleteNote(noteContent)\"></a>\n            <span>\n                <input class=\"search\" type=\"text\" placeholder=\"Search Note Here..\" [(ngModel)]=\"searchedKeyword\"\n                    tabindex=\"-1\" data-search=\"template-search\" (keyup)=\"searchContent()\">\n            </span>\n        </nav>\n    </div>\n</div>\n<section class=\"main-grid\">\n    <aside class=\"main-side\">\n        <section class=\"chats\">\n            <ul class=\"chats-list\" *ngFor=\"let note of noteDetails  | filter: searchedKeyword\">\n                <li class=\"chats-item\" [ngClass]=\"note.isSelected?'active':''\" (click)=\"getConent(note)\">\n                    <div class=\"chats-item-button js-chat-button\" role=\"button\" tabindex=\"0\">\n                        <header class=\"chats-item-header\">\n                            <h3 class=\"chats-item-title\">{{note.name}}</h3>\n                        </header>\n                        <div class=\"chats-item-content\">\n                            <p class=\"chats-item-last\">{{moment(note.date).format('hh:mm:A')}}</p>\n                        </div>\n                    </div>\n                </li>\n            </ul>\n        </section>\n    </aside>\n    <div *ngIf=\"noteDetails.length && !(noteDetails | filter : searchedKeyword).length\">No matches{{noteDetails.length}}\n        found!</div>\n    <span *ngIf=\"!noteDetails?.length\" style=\"margin-top: 40px;\">No Notes Created Yet...</span>\n    <div class=\"form-group\">\n        <h1 class=\"info-text\" *ngIf=\"noteContent.name&& conentVisible\">\n            {{moment(todayDate).format('MMMM, DD yyyy' )}} at {{moment(todayDate).format('hh:mm A' )}}</h1>\n        <textarea *ngIf=\"conentVisible\" style=\"border: none;outline:none\" rows=\"100\" cols=\"100\" type=\"text\"\n            name=\"noteContent\" [(ngModel)]=\"noteContent.name\"\n            (ngModelChange)=\"UpdateNotesConent(noteContent)\"></textarea>\n    </div>\n</section>";
+    __webpack_exports__["default"] = "<div class=\"fixed-header\">\n    <div class=\"container\" style=\"text-align: center\">\n        <nav>\n            <a class=\"fa fa-edit\" id=\"addBtn\" data-placement=\"top\" title=\"Add Notes\" (click)=\"addNotes()\"></a>\n            <a class=\"fa fa-trash\" id=\"deleteBtn\" *ngIf=\"deltebtnVisible &&  conentVisible\"\n                (click)=\"deleteNote(noteContent)\" data-placement=\"top\" title=\"Delete Notes\"></a>\n            <span>\n                <input class=\"search\" type=\"text\" placeholder=\"Search Note Here..\" [(ngModel)]=\"searchedKeyword\"\n                    tabindex=\"-1\" data-search=\"template-search\" (keyup)=\"searchContent()\">\n            </span>\n        </nav>\n    </div>\n</div>\n<section class=\"main-grid\">\n    <aside class=\"main-side\">\n        <section class=\"chats\">\n            <ul class=\"chats-list\" *ngFor=\"let note of noteDetails  | filter: searchedKeyword\">\n                <li class=\"chats-item\" [ngClass]=\"note.isSelected?'active':''\" (click)=\"getConent(note)\">\n                    <div class=\"chats-item-button js-chat-button\" role=\"button\" tabindex=\"0\">\n                        <header class=\"chats-item-header\">\n                            <h3 class=\"chats-item-title\">{{note.name}}</h3>\n                        </header>\n                        <div class=\"chats-item-content\">\n                            <p class=\"chats-item-last\">{{moment(note.date).format('hh:mm:A')}}</p>\n                        </div>\n                    </div>\n                </li>\n            </ul>\n        </section>\n    </aside>\n    <div *ngIf=\"noteDetails.length && !(noteDetails | filter : searchedKeyword).length\">No Notes\n        found!</div>\n    <span *ngIf=\"!noteDetails?.length\" style=\"margin-top: 40px;\">No Notes Created Yet...</span>\n    <div class=\"form-group\">\n        <h1 class=\"info-text\" *ngIf=\"noteContent.name&& conentVisible\">\n            {{moment(todayDate).format('MMMM, DD yyyy' )}} at {{moment(todayDate).format('hh:mm A' )}}</h1>\n        <textarea *ngIf=\"conentVisible\" style=\"border: none;outline:none\" rows=\"100\" cols=\"100\" type=\"text\"\n            name=\"noteContent\" [(ngModel)]=\"noteContent.name\"\n            (ngModelChange)=\"UpdateNotesConent(noteContent)\"></textarea>\n    </div>\n</section>";
     /***/
   },
 
@@ -1335,6 +1335,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
           this.commonSerive.setToken('notesData', JSON.stringify(this.noteDetails));
           this.noteContent = this.noteDetails[0];
+          this.conentVisible = true;
         }
         /************************************************************************* */
 
@@ -1358,10 +1359,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             }
           });
         }
+        /*********************************************************************************
+             @PURPOSE      : Search for Notes
+        /*********************************************************************************/
+
       }, {
         key: "searchContent",
         value: function searchContent() {
           this.conentVisible = false;
+          this.noteDetails.forEach(function (element, index) {
+            element.isSelected = false;
+          });
         }
       }]);
 
